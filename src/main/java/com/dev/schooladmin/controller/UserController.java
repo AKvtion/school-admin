@@ -1,16 +1,25 @@
 package com.dev.schooladmin.controller;
 
 
+import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
+import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (User)表控制层
@@ -19,6 +28,7 @@ import java.util.List;
  * @since 2023-03-25 16:35:53
  */
 @RestController
+@Api(tags = "UserController")
 @RequestMapping("user")
 public class UserController{
     /**
@@ -28,13 +38,40 @@ public class UserController{
     private UserService userService;
 
     /**
+     * 登录方法
+     * @param data
+     * @return
+     */
+    @PostMapping("/login")
+    public Result login(@RequestBody SignInData data){
+        if (Validator.isEmpty(data.getName()) || Validator.isEmpty(data.getPassword())){
+            return new Result().fail(400,"用户名或密码不能为空！");
+        }
+        SaTokenInfo saTokenInfo = userService.login(data);
+        if ( saTokenInfo == null ){
+            return new Result().fail(400,"用户名或密码错误！");
+        }
+        //用map集合将登录生成的token信息返回给前端
+        Map<String,Object> maps = new HashMap<>();
+        maps.put("token",saTokenInfo.getTokenValue());
+        return new Result().success(maps);
+    }
+
+    @ApiOperation(value = "查询当前登录状态")
+    @GetMapping(value = "/isLogin")
+    @ResponseBody
+    public Result isLogin() {
+        return new Result().success(StpUtil.isLogin());
+    }
+
+    /**
      * 分页查询所有数据
      *
      * @param page 分页对象
      * @param user 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/selectAll")
     public Result selectAll(Page<User> page, User user) {
         return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
     }

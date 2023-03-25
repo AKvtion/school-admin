@@ -1,6 +1,5 @@
-package com.neko.seed.user.exception;
+package com.dev.schooladmin.base.exception;
 
-import com.neko.seed.base.exception.ServiceException;
 
 public class UserNotFoundException extends ServiceException {
     public UserNotFoundException() {
