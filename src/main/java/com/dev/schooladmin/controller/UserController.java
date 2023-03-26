@@ -65,6 +65,15 @@ public class UserController{
     }
 
     /**
+     * 退出方法
+     */
+    @PostMapping("/loginOut")
+    public Result loginOut(){
+        StpUtil.logout();
+        return new Result().success();
+    }
+
+    /**
      * 分页查询所有数据
      *
      * @param page 分页对象
