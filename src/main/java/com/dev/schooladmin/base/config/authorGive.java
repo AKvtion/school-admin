@@ -1,6 +1,7 @@
 package com.dev.schooladmin.base.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
@@ -18,15 +19,19 @@ public class authorGive implements StpInterface {
     //添加某些权限可以访问的
     @Override
     public List<String> getPermissionList(Object o, String s) {
+//        //“*”权限表示什么都可以访问
+//        List<String> list = new ArrayList<String>();
+//        list.add("student.selectAll");
+//        list.add("student.selectOne");
+//        list.add("user.add");
+//        list.add("user.selectAll");
+
+        //o属性就是刚刚登录绑定的id，通过这个id去数据库查询权限
         Integer id = Integer.parseInt((String) o);
-        User user = userDao.selectOne(new QueryWrapper<User>().select("id,name,password,email").eq("id", id));
-        //“*”权限表示什么都可以访问
-        List<String> list = new ArrayList<String>();
-        //“*”权限表示什么都可以访问
-        list.add(user.getName());
-        list.add("user.selectOne");
-        list.add("user.selectAll");
+//        List<String> list = userDao.getPermissionListByUserId(StpUtil.getLoginId(id));
+        List<String> list = userDao.getPermissionListByUserId(id);
         return list;
+
     }
 
     //添加某些角色可以访问的
@@ -38,8 +43,6 @@ public class authorGive implements StpInterface {
         List<String> list = new ArrayList<String>();
         //“*”权限表示什么都可以访问
         list.add(user.getName());
-        list.add("teacher");
-        list.add("student");
         return list;
     }
 }

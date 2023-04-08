@@ -1,6 +1,10 @@
 package com.dev.schooladmin.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Validator;
@@ -54,6 +58,8 @@ public class UserController{
         //用map集合将登录生成的token信息返回给前端
         Map<String,Object> maps = new HashMap<>();
         maps.put("token",saTokenInfo.getTokenValue());
+        maps.put("roleList",StpUtil.getRoleList());
+        maps.put("permissionList",StpUtil.getPermissionList());
         return new Result().success(maps);
     }
 
@@ -81,6 +87,9 @@ public class UserController{
      * @return 所有数据
      */
     @GetMapping("/selectAll")
+    @SaCheckLogin
+    @SaCheckRole("admin")
+    @SaCheckPermission(value = {"user.query"}, mode = SaMode.AND)
     public Result selectAll(Page<User> page, User user) {
         return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
     }
@@ -88,10 +97,12 @@ public class UserController{
     /**
      * 通过主键查询单条数据
      *
-     * @param id 主键
-     * @return 单条数据
+     * @param id
+     * @return
      */
+    @SaCheckLogin
     @GetMapping("{id}")
+    @SaCheckPermission("user.queryOne")
     public Result selectOne(@PathVariable Serializable id) {
         return new Result().success(this.userService.getById(id));
     }
@@ -102,7 +113,9 @@ public class UserController{
      * @param user 实体对象
      * @return 新增结果
      */
+    @SaCheckLogin
     @PostMapping
+    @SaCheckPermission("user.add")
     public Result insert(@RequestBody User user) {
         return new Result().success(this.userService.save(user));
     }
@@ -113,7 +126,9 @@ public class UserController{
      * @param user 实体对象
      * @return 修改结果
      */
+    @SaCheckLogin
     @PutMapping
+    @SaCheckPermission("user.update")
     public Result update(@RequestBody User user) {
         return new Result().success(this.userService.updateById(user));
     }
@@ -124,7 +139,9 @@ public class UserController{
      * @param idList 主键结合
      * @return 删除结果
      */
+    @SaCheckLogin
     @DeleteMapping
+    @SaCheckPermission("user.del")
     public Result delete(@RequestParam("idList") List<Long> idList) {
         return new Result().success(this.userService.removeByIds(idList));
     }

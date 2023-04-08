@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.schooladmin.dao.UserDao">
+
+    <select id="getPermissionListByUserId" resultType="java.lang.String">
+        SELECT p.`pmsName` AS permission_name, p.`pmsDescribe` AS permission_description, u.`name`,u.`status`,u.`email`
+        FROM permission p
+                 INNER JOIN rolepms rp ON p.`id` = rp.`pmsID`
+                 INNER JOIN role r ON r.id = rp.`roleID`
+                 INNER JOIN userrole ur ON r.id = ur.`roleID`
+                 INNER JOIN USER u ON u.`id` = ur.`userID`
+        WHERE u.`id` = #{id};
+    </select>
+
+
+</mapper>
