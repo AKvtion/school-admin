@@ -24,6 +24,10 @@ public class User extends Model<User> {
     private String email;
     //状态 用户状态 0表示禁用，1表示启用
     private String status;
+    //类型
+    private String type;
+    //标识
+    private Integer user_id;
     /**
      * 获取主键值
      *

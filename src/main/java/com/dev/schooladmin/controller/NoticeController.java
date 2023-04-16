@@ -35,7 +35,7 @@ public class NoticeController {
      * @param notice 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/selectAll")
     @SaCheckPermission("notice.query")
     public Result selectAll(Page<Notice> page, Notice notice) {
         return new Result().success(this.noticeService.page(page, new QueryWrapper<>(notice)));
@@ -47,7 +47,7 @@ public class NoticeController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
+    @GetMapping("/selectOne/{id}")
     @SaCheckPermission("notice.queryOne")
     public Result selectOne(@PathVariable Serializable id) {
         return new Result().success(this.noticeService.getById(id));
