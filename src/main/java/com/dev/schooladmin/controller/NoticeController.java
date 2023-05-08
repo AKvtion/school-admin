@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.entity.Notice;
 import com.dev.schooladmin.service.NoticeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("notice")
+@Api(tags = "公告通知模块")
 public class NoticeController {
     /**
      * 服务对象
@@ -37,6 +40,7 @@ public class NoticeController {
      */
     @GetMapping("/selectAll")
     @SaCheckPermission("notice.query")
+    @ApiOperation(value = "查询所有通知消息")
     public Result selectAll(Page<Notice> page, Notice notice) {
         return new Result().success(this.noticeService.page(page, new QueryWrapper<>(notice)));
     }
@@ -49,6 +53,7 @@ public class NoticeController {
      */
     @GetMapping("/selectOne/{id}")
     @SaCheckPermission("notice.queryOne")
+    @ApiOperation(value = "查询单条通知消息")
     public Result selectOne(@PathVariable Serializable id) {
         return new Result().success(this.noticeService.getById(id));
     }
@@ -61,6 +66,7 @@ public class NoticeController {
      */
     @PostMapping
     @SaCheckRole("notice.add")
+    @ApiOperation(value = "新增通知消息")
     public Result insert(@RequestBody Notice notice) {
         return new Result().success(this.noticeService.save(notice));
     }
@@ -73,6 +79,7 @@ public class NoticeController {
      */
     @PutMapping
     @SaCheckPermission("notice.update")
+    @ApiOperation(value = "修改通知消息")
     public Result update(@RequestBody Notice notice) {
         return new Result().success(this.noticeService.updateById(notice));
     }
@@ -85,6 +92,7 @@ public class NoticeController {
      */
     @DeleteMapping
     @SaCheckPermission("notice.del")
+    @ApiOperation(value = "删除通知消息")
     public Result delete(@RequestParam("idList") List<Long> idList) {
         return new Result().success(this.noticeService.removeByIds(idList));
     }

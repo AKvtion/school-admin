@@ -7,8 +7,8 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.lang.Validator;
-import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @since 2023-03-25 16:35:53
  */
 @RestController
-@Api(tags = "UserController")
+@Api(tags = "管理员模块")
 @RequestMapping("user")
 public class UserController{
     /**
@@ -41,12 +41,35 @@ public class UserController{
     @Resource
     private UserService userService;
 
+    // 查询权限   ---- http://localhost:8081/user/getPermission
+
+    /**
+     * 当前登录账号拥有的所有权限
+     * @return SaResult
+     */
+    @RequestMapping("getPermission")
+    @ApiOperation(value = "当前登录账号拥有的所有权限")
+    public SaResult getPermission() {
+        // 查询权限信息 ，如果当前会话未登录，会返回一个空集合
+        List<String> permissionList = StpUtil.getPermissionList();
+        System.out.println("当前登录账号拥有的所有权限：" + permissionList);
+
+        // 查询角色信息 ，如果当前会话未登录，会返回一个空集合
+        List<String> roleList = StpUtil.getRoleList();
+        System.out.println("当前登录账号拥有的所有角色：" + roleList);
+        // 返回给前端
+        return SaResult.ok()
+                .set("roleList", roleList)
+                .set("permissionList", permissionList);
+    }
+
     /**
      * 登录方法
-     * @param data
-     * @return
+     * @param data 实体
+     * @return Result
      */
     @PostMapping("/login")
+    @ApiOperation(value = "登录方法")
     public Result login(@RequestBody SignInData data){
         if (Validator.isEmpty(data.getName()) || Validator.isEmpty(data.getPassword())){
             return new Result().fail(400,"用户名或密码不能为空！");
@@ -63,6 +86,10 @@ public class UserController{
         return new Result().success(maps);
     }
 
+    /**
+     * 查询当前登录状态
+     * @return Result
+     */
     @ApiOperation(value = "查询当前登录状态")
     @GetMapping(value = "/isLogin")
     @ResponseBody
@@ -74,6 +101,7 @@ public class UserController{
      * 退出方法
      */
     @PostMapping("/loginOut")
+    @ApiOperation(value = "退出方法")
     public Result loginOut(){
         StpUtil.logout();
         return new Result().success();
@@ -86,9 +114,10 @@ public class UserController{
      * @param user 查询实体
      * @return 所有数据
      */
-    @GetMapping("/selectAll")
     @SaCheckLogin
     @SaCheckRole("admin")
+    @GetMapping("/selectAll")
+    @ApiOperation(value = "查询所有管理员信息")
     @SaCheckPermission(value = {"user.query"}, mode = SaMode.AND)
     public Result selectAll(Page<User> page, User user) {
         return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
@@ -97,12 +126,13 @@ public class UserController{
     /**
      * 通过主键查询单条数据
      *
-     * @param id
-     * @return
+     * @param id 主键
+     * @return Result
      */
     @SaCheckLogin
     @GetMapping("{id}")
     @SaCheckPermission("user.queryOne")
+    @ApiOperation(value = "查询单条管理员信息")
     public Result selectOne(@PathVariable Serializable id) {
         return new Result().success(this.userService.getById(id));
     }
@@ -116,6 +146,7 @@ public class UserController{
     @SaCheckLogin
     @PostMapping
     @SaCheckPermission("user.add")
+    @ApiOperation(value = "新增管理员信息")
     public Result insert(@RequestBody User user) {
         return new Result().success(this.userService.save(user));
     }
@@ -129,6 +160,7 @@ public class UserController{
     @SaCheckLogin
     @PutMapping
     @SaCheckPermission("user.update")
+    @ApiOperation(value = "修改管理员信息")
     public Result update(@RequestBody User user) {
         return new Result().success(this.userService.updateById(user));
     }
@@ -142,6 +174,7 @@ public class UserController{
     @SaCheckLogin
     @DeleteMapping
     @SaCheckPermission("user.del")
+    @ApiOperation(value = "删除管理员信息")
     public Result delete(@RequestParam("idList") List<Long> idList) {
         return new Result().success(this.userService.removeByIds(idList));
     }
