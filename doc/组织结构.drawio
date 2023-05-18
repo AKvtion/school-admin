@@ -1,0 +1,42 @@
+<mxfile host="app.diagrams.net" modified="2023-05-08T06:49:19.317Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.35" etag="yBMN9v-ZDIiaZWtcDGSw" version="21.2.9" type="device">
+  <diagram id="prtHgNgQTEPvFCAcTncT" name="Page-1">
+    <mxGraphModel dx="1434" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="E_0BUIC0GlbQseeLkTtx-1" value="Orgchart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;" vertex="1" parent="1">
+          <mxGeometry x="59" y="40" width="710" height="290" as="geometry" />
+        </mxCell>
+        <UserObject label="大数据学院" name="Tessa Miller" position="CFO" location="Office 1" email="me@example.com" placeholders="1" link="https://www.draw.io" id="E_0BUIC0GlbQseeLkTtx-2">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="E_0BUIC0GlbQseeLkTtx-1">
+            <mxGeometry x="260" y="50" width="180" height="70" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="E_0BUIC0GlbQseeLkTtx-3" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" edge="1" parent="E_0BUIC0GlbQseeLkTtx-1" source="E_0BUIC0GlbQseeLkTtx-2" target="E_0BUIC0GlbQseeLkTtx-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="小明" name="Edward Morrison" position="Brand Manager" location="Office 2" email="me@example.com" placeholders="1" link="https://www.draw.io" id="E_0BUIC0GlbQseeLkTtx-4">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-10-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="E_0BUIC0GlbQseeLkTtx-1">
+            <mxGeometry x="40" y="180" width="180" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="E_0BUIC0GlbQseeLkTtx-5" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" edge="1" parent="E_0BUIC0GlbQseeLkTtx-1" source="E_0BUIC0GlbQseeLkTtx-2" target="E_0BUIC0GlbQseeLkTtx-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="小红" name="Evan Valet" position="HR Director" location="Office 4" email="me@example.com" placeholders="1" link="https://www.draw.io" id="E_0BUIC0GlbQseeLkTtx-6">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="E_0BUIC0GlbQseeLkTtx-1">
+            <mxGeometry x="260" y="180" width="180" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="E_0BUIC0GlbQseeLkTtx-7" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" edge="1" parent="E_0BUIC0GlbQseeLkTtx-1" source="E_0BUIC0GlbQseeLkTtx-2" target="E_0BUIC0GlbQseeLkTtx-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="小刚" name="Alison Donovan" position="System Admin" location="Office 3" email="me@example.com" placeholders="1" link="https://www.draw.io" id="E_0BUIC0GlbQseeLkTtx-8">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="E_0BUIC0GlbQseeLkTtx-1">
+            <mxGeometry x="490" y="180" width="180" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

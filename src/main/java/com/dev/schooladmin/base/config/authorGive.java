@@ -40,10 +40,10 @@ public class authorGive implements StpInterface {
     public List<String> getRoleList(Object o, String lognType) {
         //o属性就是刚刚绑定的id，通过这个id去数据库查询权限
         Integer id = Integer.parseInt((String) o);
-        User user = userDao.selectOne(new QueryWrapper<User>().select("id,name,password,email").eq("id", id));
+        User user = userDao.selectOne(new QueryWrapper<User>().select("id,username,password,email").eq("id", id));
         List<String> list = new ArrayList<>();
         //“*”权限表示什么都可以访问
-        list.add(user.getName());
+        list.add(user.getUsername());
         return list;
     }
 }

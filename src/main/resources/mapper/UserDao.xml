@@ -4,7 +4,7 @@
 <mapper namespace="com.dev.schooladmin.dao.UserDao">
 
     <select id="getPermissionListByUserId" resultType="java.lang.String">
-        SELECT p.`pmsName` AS permission_name, p.`pmsDescribe` AS permission_description, u.`name`,u.`status`,u.`email`
+        SELECT p.`pmsName` AS permission_name, p.`pmsDescribe` AS permission_description, u.`username`,u.`status`,u.`email`
         FROM permission p
                  INNER JOIN rolepms rp ON p.`id` = rp.`pmsID`
                  INNER JOIN role r ON r.id = rp.`roleID`

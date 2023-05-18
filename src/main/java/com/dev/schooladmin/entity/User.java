@@ -17,13 +17,13 @@ public class User extends Model<User> {
     //主键
     private Integer id;
     //用户名
-    private String name;
+    private String username;
     //密码
     private String password;
     //邮箱
     private String email;
     //状态 用户状态 0表示禁用，1表示启用
-    private String status;
+    private Integer status;
     //类型
     private String type;
     //标识

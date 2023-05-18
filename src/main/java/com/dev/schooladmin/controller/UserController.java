@@ -52,11 +52,10 @@ public class UserController{
     public SaResult getPermission() {
         // 查询权限信息 ，如果当前会话未登录，会返回一个空集合
         List<String> permissionList = StpUtil.getPermissionList();
-        System.out.println("当前登录账号拥有的所有权限：" + permissionList);
-
+//        System.out.println("当前登录账号拥有的所有权限：" + permissionList);
         // 查询角色信息 ，如果当前会话未登录，会返回一个空集合
         List<String> roleList = StpUtil.getRoleList();
-        System.out.println("当前登录账号拥有的所有角色：" + roleList);
+//        System.out.println("当前登录账号拥有的所有角色：" + roleList);
         // 返回给前端
         return SaResult.ok()
                 .set("roleList", roleList)
@@ -71,18 +70,35 @@ public class UserController{
     @PostMapping("/login")
     @ApiOperation(value = "登录方法")
     public Result login(@RequestBody SignInData data){
-        if (Validator.isEmpty(data.getName()) || Validator.isEmpty(data.getPassword())){
+        if (Validator.isEmpty(data.getUsername()) || Validator.isEmpty(data.getPassword())){
             return new Result().fail(400,"用户名或密码不能为空！");
         }
         SaTokenInfo saTokenInfo = userService.login(data);
+        info(data);
         if ( saTokenInfo == null ){
             return new Result().fail(400,"用户名或密码错误！");
         }
         //用map集合将登录生成的token信息返回给前端
         Map<String,Object> maps = new HashMap<>();
         maps.put("token",saTokenInfo.getTokenValue());
-        maps.put("roleList",StpUtil.getRoleList());
-        maps.put("permissionList",StpUtil.getPermissionList());
+        //maps.put("roleList",StpUtil.getRoleList());
+        //maps.put("permissionList",StpUtil.getPermissionList());
+        return new Result().success(maps);
+    }
+
+    @GetMapping("/info")
+    @ApiOperation(value = "用户信息")
+    public Result info(SignInData data){
+        //User user = userService.getOne(new QueryWrapper<User>().select("id,name,password").eq("name", data.getUsername()));
+//        SaTokenInfo saTokenInfo = userService.login(data);
+//        System.out.println(saTokenInfo);
+        //用map集合将登录生成的token信息返回给前端
+        Map<String,Object> maps = new HashMap<>();
+        maps.put("avatar","https://s2.loli.net/2022/08/18/mXaLtIijAKPq4D1.png");
+        maps.put("name",StpUtil.getTokenName());
+//        maps.put("name",user.getName());
+        maps.put("roles",StpUtil.getRoleList());
+        maps.put("data",StpUtil.getPermissionList());
         return new Result().success(maps);
     }
 
@@ -116,11 +132,17 @@ public class UserController{
      */
     @SaCheckLogin
     @SaCheckRole("admin")
-    @GetMapping("/selectAll")
+    @GetMapping("/list")
     @ApiOperation(value = "查询所有管理员信息")
     @SaCheckPermission(value = {"user.query"}, mode = SaMode.AND)
     public Result selectAll(Page<User> page, User user) {
-        return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
+        System.out.println(StpUtil.getRoleList());
+        Page<User> pageDate = this.userService.page(page,new QueryWrapper<>(user));
+        Map<String,Object> maps = new HashMap<>();
+        maps.put("erpMemberRoles",StpUtil.getRoleList());
+        maps.put("pageDate",pageDate);
+//        return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
+        return new Result().success(maps);
     }
 
     /**

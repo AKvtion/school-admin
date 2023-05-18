@@ -2,11 +2,9 @@ package com.dev.schooladmin.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
@@ -30,7 +28,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public SaTokenInfo login(SignInData data) {
         //查询id,name,password字段，条件(数据库的列名name）和用户传进来的字符串data.getName()
-        User user = userDao.selectOne(new QueryWrapper<User>().select("id,name,password").eq("name", data.getName()));
+        User user = userDao.selectOne(new QueryWrapper<User>().select("id,username,password").eq("username", data.getUsername()));
         if (user == null) {
             return null;
         }
