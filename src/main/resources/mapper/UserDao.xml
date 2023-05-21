@@ -13,5 +13,14 @@
         WHERE u.`id` = #{id};
     </select>
 
+    <select id="selectUserRole" resultType="com.dev.schooladmin.controller.DTO.UserRole">
+        SELECT u.id, u.`username`, u.`password`, u.`status`, u.`email`,
+            u.`type`, r.id,r.`name`,r.`description`
+        FROM user u
+             LEFT JOIN userrole ur ON u.id = ur.userID
+             LEFT JOIN role r ON ur.roleID = r.id;
+    </select>
+
+
 
 </mapper>

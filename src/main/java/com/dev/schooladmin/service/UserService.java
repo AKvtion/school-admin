@@ -2,9 +2,12 @@ package com.dev.schooladmin.service;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.SignInData;
+import com.dev.schooladmin.controller.DTO.UserRole;
+import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.entity.User;
+
+import java.util.List;
 
 /**
  * (User)表服务接口
@@ -14,5 +17,8 @@ import com.dev.schooladmin.entity.User;
  */
 public interface UserService extends IService<User> {
     SaTokenInfo login(SignInData data);
+
+    List<UserRole> selectUserRole();
+
 }
 

@@ -9,10 +9,12 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.lang.Validator;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.SignInData;
+import com.dev.schooladmin.controller.DTO.UserRole;
+import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;
 import io.swagger.annotations.Api;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,16 +136,26 @@ public class UserController{
     @SaCheckLogin
     @SaCheckRole("admin")
     @GetMapping("/list")
-    @ApiOperation(value = "查询所有管理员信息")
+    @ApiOperation(value = "查询所有用户的信息和对应的角色")
     @SaCheckPermission(value = {"user.query"}, mode = SaMode.AND)
     public Result selectAll(Page<User> page, User user) {
-        System.out.println(StpUtil.getRoleList());
-        Page<User> pageDate = this.userService.page(page,new QueryWrapper<>(user));
-        Map<String,Object> maps = new HashMap<>();
-        maps.put("erpMemberRoles",StpUtil.getRoleList());
-        maps.put("pageDate",pageDate);
-//        return new Result().success(this.userService.page(page, new QueryWrapper<>(user)));
-        return new Result().success(maps);
+        List<UserRole> userRoles = this.userService.selectUserRole();
+        //遍历 userRoles 列表
+        for (UserRole userRole : userRoles) {
+            //对于每个 UserRole 对象，创建一个新的 ErpMemberRoles 对象
+            ErpMemberRoles erpMemberRole = new ErpMemberRoles();
+            //把查询出来 UserRole 对象的属性值赋值到ErpMemberRoles 角色类属性
+            erpMemberRole.setName(userRole.getName());
+            erpMemberRole.setDescription(userRole.getDescription());
+
+            //创建一个 ErpMemberRoles 类型的 List数组，将新创建的 erpMemberRole 对象添加到列表中
+            List<ErpMemberRoles> ers = new ArrayList<>();
+            ers.add(erpMemberRole);
+            //将 ErpMemberRoles 的 List 设置回 UserRole 对象的 erpMemberRoles 属性中
+            userRole.setErpMemberRoles(ers);
+        }
+        //返回 userRoles 数据
+        return new Result().success(userRoles);
     }
 
     /**

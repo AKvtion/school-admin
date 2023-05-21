@@ -6,12 +6,15 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dev.schooladmin.controller.DTO.SignInData;
+import com.dev.schooladmin.controller.DTO.UserRole;
+import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -39,6 +42,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         //sa-token的登录方法
         StpUtil.login(user.getId());
         return StpUtil.getTokenInfo();  //返回token
+    }
+
+    @Override
+    public List<UserRole> selectUserRole() {
+        return userDao.selectUserRole();
     }
 }
 

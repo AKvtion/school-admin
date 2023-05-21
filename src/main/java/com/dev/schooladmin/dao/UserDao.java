@@ -1,10 +1,11 @@
 package com.dev.schooladmin.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.dev.schooladmin.controller.DTO.UserRole;
+import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -17,5 +18,8 @@ import java.util.List;
 @Mapper
 public interface UserDao extends BaseMapper<User> {
     List<String> getPermissionListByUserId(@Param("id") Integer id);
+
+    List<UserRole> selectUserRole();
+
 }
 
