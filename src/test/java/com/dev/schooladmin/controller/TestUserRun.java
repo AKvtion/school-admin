@@ -1,8 +1,8 @@
 package com.dev.schooladmin.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.dev.schooladmin.controller.DTO.UserRole;
-import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
+import com.dev.schooladmin.controller.DTO.*;
+import com.dev.schooladmin.dao.RoleDao;
 import com.dev.schooladmin.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +15,9 @@ import java.util.List;
 public class TestUserRun {
     @Resource
     private UserDao userDao;
+
+    @Resource
+    private RoleDao roleDao;
 
     @Test
     public void test1(){
@@ -35,6 +38,29 @@ public class TestUserRun {
         }
         //使用FastJson将 userRoles 列表转换为 JSON 字符串
         String s = JSON.toJSONString(userRoles);
+        System.out.println(s);
+    }
+
+    //角色表和权限表
+    @Test
+    public void test2(){
+        List<RolePms> rolePms = roleDao.selectRoleAll();
+        for (int i = 0; i < rolePms.size(); i++) {
+            RolePms r = rolePms.get(i);
+
+            List<ErpMemberPermission> ersList = new ArrayList<>();
+
+            for (int j = 0; j < rolePms.size(); j++) {
+                RolePms role = rolePms.get(j);
+                ErpMemberPermission erpMemberPermission = new ErpMemberPermission();
+
+                erpMemberPermission.setPmsName(role.getName());
+                erpMemberPermission.setPmsDescribe(role.getPmsDescribe());
+                ersList.add(erpMemberPermission);
+            }
+            r.setErpMemberPermissions(ersList);
+        }
+        String s = JSON.toJSONString(rolePms);
         System.out.println(s);
     }
 }

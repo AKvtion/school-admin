@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.controller.DTO.UserRole;
-import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;

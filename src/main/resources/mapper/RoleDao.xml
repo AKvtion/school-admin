@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.schooladmin.dao.RoleDao">
+
+
+    <select id="selectRoleAll" resultType="com.dev.schooladmin.controller.DTO.RolePms">
+        SELECT r.`name`,r.`description`,r.`status`,p.`id`,p.`pmsName`,p.`pmsDescribe`
+        FROM role r
+                 LEFT JOIN rolepms rp ON rp.`roleID` = r.`id`
+                 LEFT JOIN permission p ON rp.`pmsID` = p.`id`;
+    </select>
+</mapper>
