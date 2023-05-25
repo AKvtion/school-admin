@@ -10,11 +10,13 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.controller.DTO.UserRole;
 import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
+import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;
 import io.swagger.annotations.Api;
@@ -43,6 +45,7 @@ public class UserController{
      */
     @Resource
     private UserService userService;
+    static String name;
 
     // 查询权限   ---- http://localhost:8081/user/getPermission
 
@@ -77,29 +80,27 @@ public class UserController{
             return new Result().fail(400,"用户名或密码不能为空！");
         }
         SaTokenInfo saTokenInfo = userService.login(data);
-        info(data);
         if ( saTokenInfo == null ){
             return new Result().fail(400,"用户名或密码错误！");
         }
+        name = data.getUsername();
         //用map集合将登录生成的token信息返回给前端
         Map<String,Object> maps = new HashMap<>();
         maps.put("token",saTokenInfo.getTokenValue());
-        //maps.put("roleList",StpUtil.getRoleList());
-        //maps.put("permissionList",StpUtil.getPermissionList());
         return new Result().success(maps);
     }
 
     @GetMapping("/info")
     @ApiOperation(value = "用户信息")
-    public Result info(SignInData data){
-        //User user = userService.getOne(new QueryWrapper<User>().select("id,name,password").eq("name", data.getUsername()));
-//        SaTokenInfo saTokenInfo = userService.login(data);
-//        System.out.println(saTokenInfo);
+    public Result info(){
         //用map集合将登录生成的token信息返回给前端
         Map<String,Object> maps = new HashMap<>();
         maps.put("avatar","https://s2.loli.net/2022/08/18/mXaLtIijAKPq4D1.png");
-        maps.put("name",StpUtil.getTokenName());
-//        maps.put("name",user.getName());
+        User user = userService.selectOne(name);
+        if (user == null){
+            return new Result().fail("获取用户信息失败",400);
+        }
+        maps.put("name",user.getUsername());
         maps.put("roles",StpUtil.getRoleList());
         maps.put("data",StpUtil.getPermissionList());
         return new Result().success(maps);

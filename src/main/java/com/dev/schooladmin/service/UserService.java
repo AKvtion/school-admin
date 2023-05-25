@@ -4,7 +4,6 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.controller.DTO.UserRole;
-import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
 import com.dev.schooladmin.entity.User;
 
 import java.util.List;
@@ -20,5 +19,6 @@ public interface UserService extends IService<User> {
 
     List<UserRole> selectUserRole();
 
+    User selectOne(String username);
 }
 

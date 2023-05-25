@@ -47,5 +47,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public List<UserRole> selectUserRole() {
         return userDao.selectUserRole();
     }
+
+    @Override
+    public User selectOne(String username) {
+        return userDao.selectOne(new QueryWrapper<User>().select("id,username").eq("username", username));
+    }
 }
 

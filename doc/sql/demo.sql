@@ -30,6 +30,21 @@ SELECT r.`name`,r.`description`,r.`status`,p.`id`,p.`pmsName`,p.`pmsDescribe`
       LEFT JOIN permission p ON rp.`pmsID` = p.`id`;
        
 
+                 
+SELECT r.`name`,r.`description`,r.`status`,p.`id`,p.`pmsName`,p.`pmsDescribe`
+FROM role r
+         LEFT JOIN rolepms rp ON rp.`roleID` = r.`id`
+         LEFT JOIN permission p ON rp.`pmsID` = p.`id`
+GROUP BY r.`id`, p.`id`;
+
+
+SELECT r.`name`,r.`description`,r.`status`,
+       GROUP_CONCAT(DISTINCT p.`pmsName` SEPARATOR ',') AS pmsName,
+       GROUP_CONCAT(DISTINCT p.`pmsDescribe` SEPARATOR ',') AS pmsDescribe
+FROM role r
+LEFT JOIN rolepms rp ON rp.`roleID` = r.`id`
+LEFT JOIN permission p ON rp.`pmsID` = p.`id`
+GROUP BY r.`id`;
 
  -- 修改用户的角色 userID 为当前的系统用户，roleID 为前端传过来的变量
 UPDATE userrole SET roleID = 2 WHERE userID = 5;
