@@ -81,28 +81,29 @@ public class ClassController{
 
     /**
      * 修改数据
-     *
+     * @PostMapping("/update")
      * @param colony 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PostMapping("/update")
     @SaCheckPermission("class.update")
     @ApiOperation(value = "修改班级信息")
     public Result update(@RequestBody Class colony) {
+        System.out.println(colony.getId());
         return new Result().success(this.classService.updateById(colony));
     }
 
     /**
      * 删除数据
      *
-     * @param idList 主键结合
+     * @param id 主键结合
      * @return 删除结果
      */
     @DeleteMapping
     @SaCheckPermission("class.del")
     @ApiOperation(value = "删除班级信息")
-    public Result delete(@RequestParam("idList") List<Long> idList) {
-        return new Result().success(this.classService.removeByIds(idList));
+    public Result delete(@RequestParam("id") Integer id) {
+        return new Result().success(this.classService.removeById(id));
     }
 }
 
