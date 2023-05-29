@@ -58,10 +58,8 @@ public class UserController{
     public SaResult getPermission() {
         // 查询权限信息 ，如果当前会话未登录，会返回一个空集合
         List<String> permissionList = StpUtil.getPermissionList();
-//        System.out.println("当前登录账号拥有的所有权限：" + permissionList);
         // 查询角色信息 ，如果当前会话未登录，会返回一个空集合
         List<String> roleList = StpUtil.getRoleList();
-//        System.out.println("当前登录账号拥有的所有角色：" + roleList);
         // 返回给前端
         return SaResult.ok()
                 .set("roleList", roleList)
@@ -95,11 +93,11 @@ public class UserController{
     public Result info(){
         //用map集合将登录生成的token信息返回给前端
         Map<String,Object> maps = new HashMap<>();
-        maps.put("avatar","https://s2.loli.net/2022/08/18/mXaLtIijAKPq4D1.png");
         User user = userService.selectOne(name);
         if (user == null){
             return new Result().fail("获取用户信息失败",400);
         }
+        maps.put("avatar",user.getAvatar());
         maps.put("name",user.getUsername());
         maps.put("roles",StpUtil.getRoleList());
         maps.put("data",StpUtil.getPermissionList());

@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public User selectOne(String username) {
-        return userDao.selectOne(new QueryWrapper<User>().select("id,username").eq("username", username));
+        return userDao.selectOne(new QueryWrapper<User>().select("id,avatar,username").eq("username", username));
     }
 }
 

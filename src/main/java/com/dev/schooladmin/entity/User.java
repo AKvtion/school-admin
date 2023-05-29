@@ -16,6 +16,8 @@ import java.io.Serializable;
 public class User extends Model<User> {
     //主键
     private Integer id;
+    //头像
+    private String avatar;
     //用户名
     private String username;
     //密码

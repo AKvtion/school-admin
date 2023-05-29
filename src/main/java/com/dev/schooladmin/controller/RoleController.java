@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.ErpMemberPermission;
 import com.dev.schooladmin.controller.DTO.RolePms;
+import com.dev.schooladmin.entity.Role;
 import com.dev.schooladmin.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,8 +46,7 @@ public class RoleController{
     @SaCheckRole("admin")
     @GetMapping("/list")
     @ApiOperation(value = "查询所有角色的信息和对应的权限")
-    public Result selectAll(Page<com.dev.schooladmin.entity.Role> page, com.dev.schooladmin.entity.Role role) {
-//        return new Result().success(this.roleService.page(page, new QueryWrapper<>(role)));
+    public Result selectAll(Page<Role> page, Role role) {
         List<RolePms> rolePms = this.roleService.selectRoleAll();
         for (int i = 0; i < rolePms.size(); i++) {
             RolePms r = rolePms.get(i);
@@ -60,15 +60,6 @@ public class RoleController{
             }
             r.setErpMemberPermissions(ersList);
         }
-//        for (RolePms rolePms : roleList) {
-//            ErpMemberPermission emp = new ErpMemberPermission();
-//            emp.setPmsName(rolePms.getName());
-//            emp.setPmsDescribe(rolePms.getDescription());
-//
-//            List<ErpMemberPermission> empList = new ArrayList<>();
-//            empList.add(emp);
-//            rolePms.setErpMemberPermissions(empList);
-//        }
         return new Result().success(rolePms);
     }
 

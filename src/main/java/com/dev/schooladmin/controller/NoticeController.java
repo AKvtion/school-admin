@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
-import java.util.List;
+
 
 /**
  * (Notice)表控制层
@@ -34,14 +34,14 @@ public class NoticeController {
     /**
      * 分页查询所有数据
      *
-     * @param page 分页对象
      * @param notice 查询实体
      * @return 所有数据
      */
     @GetMapping("/selectAll")
     @SaCheckPermission("notice.query")
     @ApiOperation(value = "查询所有通知消息")
-    public Result selectAll(Page<Notice> page, Notice notice) {
+    public Result selectAll(Notice notice) {
+        Page<Notice> page = new Page<>(1, 3);
         return new Result().success(this.noticeService.page(page, new QueryWrapper<>(notice)));
     }
 
@@ -77,7 +77,8 @@ public class NoticeController {
      * @param notice 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PostMapping
+    @SaCheckRole("admin")
     @SaCheckPermission("notice.update")
     @ApiOperation(value = "修改通知消息")
     public Result update(@RequestBody Notice notice) {
@@ -87,14 +88,14 @@ public class NoticeController {
     /**
      * 删除数据
      *
-     * @param idList 主键结合
+     * @param id 主键结合
      * @return 删除结果
      */
     @DeleteMapping
     @SaCheckPermission("notice.del")
     @ApiOperation(value = "删除通知消息")
-    public Result delete(@RequestParam("idList") List<Long> idList) {
-        return new Result().success(this.noticeService.removeByIds(idList));
+    public Result delete(@RequestParam("id") Integer id) {
+        return new Result().success(this.noticeService.removeById(id));
     }
 }
 

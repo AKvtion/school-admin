@@ -46,7 +46,8 @@ public class ClassController{
     @GetMapping
     @SaCheckPermission(value = {"class.queryAll"})
     @ApiOperation(value = "查询所有班级信息")
-    public Result selectAll(Page<Class> page, Class colony) {
+    public Result selectAll(Class colony) {
+        Page<Class> page = new Page<>(1, 3);
         return new Result().success(this.classService.page(page, new QueryWrapper<>(colony)));
     }
 
@@ -66,12 +67,11 @@ public class ClassController{
 
     /**
      * 新增数据
-     *
+     * 角色认证：必须具有指定角色才能进入该方法
      * @param colony 实体对象
      * @return 新增结果
      */
     @PostMapping
-    // 角色认证：必须具有指定角色才能进入该方法
     @SaCheckRole("admin")
     @ApiOperation(value = "新增班级信息")
     @SaCheckPermission(value = {"class.add"}, mode = SaMode.AND)    //SaMode.AND, 标注一组权限，会话必须全部具有才可通过校验。
@@ -81,7 +81,7 @@ public class ClassController{
 
     /**
      * 修改数据
-     * @PostMapping("/update")
+     *
      * @param colony 实体对象
      * @return 修改结果
      */
@@ -100,6 +100,7 @@ public class ClassController{
      * @return 删除结果
      */
     @DeleteMapping
+    @SaCheckRole("admin")
     @SaCheckPermission("class.del")
     @ApiOperation(value = "删除班级信息")
     public Result delete(@RequestParam("id") Integer id) {
