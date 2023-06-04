@@ -3,6 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.schooladmin.dao.UserDao">
 
+    <insert id="addUser">
+        INSERT INTO USER (username, PASSWORD,email,TYPE)
+        VALUES (#{username}, #{password},#{email},#{type} );
+    </insert>
+
+    <insert id="addUserRole">
+        INSERT INTO userrole (userID, roleID)
+        SELECT u.id, r.id FROM user u,role r WHERE u.username = #{username} AND r.type = #{type} ;
+    </insert>
+
+    <delete id="delUserRoleById">
+        DELETE FROM userrole WHERE `userID` = #{id};
+    </delete>
+
+    <delete id="delUserById">
+        DELETE FROM user WHERE `id` = #{id};
+    </delete>
+
     <select id="getPermissionListByUserId" resultType="java.lang.String">
         SELECT p.`pmsName` AS permission_name, p.`pmsDescribe` AS permission_description, u.`username`,u.`status`,u.`email`
         FROM permission p

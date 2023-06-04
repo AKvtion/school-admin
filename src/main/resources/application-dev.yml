@@ -1,0 +1,24 @@
+mybatis:
+    type-aliases-package: com.dev.schooladmin.entity
+mybatis-plus:
+    mapper-locations: classpath*:mapper/*.xml
+sa-token:
+    activity-timeout: -1
+    is-concurrent: true
+    is-log: false
+    is-share: true
+    timeout: 2592000
+    token-name: satoken
+    token-style: uuid
+server:
+    port: 8081
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        name: defaultDataSource
+        password: root
+        url: jdbc:mysql://localhost:3306/school?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useUnicode=true&useSSL=false
+        username: root
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher

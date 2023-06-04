@@ -77,7 +77,7 @@ public class NoticeController {
      * @param notice 实体对象
      * @return 修改结果
      */
-    @PostMapping
+    @PutMapping
     @SaCheckRole("admin")
     @SaCheckPermission("notice.update")
     @ApiOperation(value = "修改通知消息")

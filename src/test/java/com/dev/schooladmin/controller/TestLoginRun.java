@@ -2,6 +2,7 @@ package com.dev.schooladmin.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSON;
 import com.dev.schooladmin.controller.DTO.*;
@@ -19,26 +20,26 @@ public class TestLoginRun {
     @Resource
     private UserService userService;
 
-    //ÓÃÓÚ²âÊÔÓÃ»§µÇÂ¼¹¦ÄÜ
+    //ç”¨äºæµ‹è¯•ç”¨æˆ·ç™»å½•åŠŸèƒ½
     @Test
-    public void test1(){
-        // ĞÂ½¨Ò»¸ö SignInData ¶ÔÏó data
+    public void testLogin(){
+        // æ–°å»ºä¸€ä¸ª SignInData å¯¹è±¡ data
         SignInData data = new SignInData();
-        // ÉèÖÃÆäÖĞµÄ username ºÍ password ÊôĞÔ£¬ÓÃÓÚ´æ·ÅÓÃ»§ÊäÈëµÄµÇÂ¼ĞÅÏ¢¡£
+        // è®¾ç½®å…¶ä¸­çš„ username å’Œ password å±æ€§ï¼Œç”¨äºå­˜æ”¾ç”¨æˆ·è¾“å…¥çš„ç™»å½•ä¿¡æ¯ã€‚
         data.setUsername("admin");
         data.setPassword("123456");
-        // ÀûÓÃ Validator Àà¿âÖĞµÄ isEmpty() ·½·¨ÅĞ¶ÏÓÃ»§ÊäÈëµÄÓÃ»§ÃûºÍÃÜÂëÊÇ·ñÎª¿Õ£¬Èç¹ûÎª¿ÕÔò·µ»Ø´íÎóĞÅÏ¢¡£
+        // åˆ©ç”¨ Validator ç±»åº“ä¸­çš„ isEmpty() æ–¹æ³•åˆ¤æ–­ç”¨æˆ·è¾“å…¥çš„ç”¨æˆ·åå’Œå¯†ç æ˜¯å¦ä¸ºç©ºï¼Œå¦‚æœä¸ºç©ºåˆ™è¿”å›é”™è¯¯ä¿¡æ¯ã€‚
         if (Validator.isEmpty(data.getUsername()) || Validator.isEmpty(data.getPassword())){
-            System.out.println("400,ÓÃ»§Ãû»òÃÜÂë²»ÄÜÎª¿Õ£¡");
+            System.out.println("400,ç”¨æˆ·åæˆ–å¯†ç ä¸èƒ½ä¸ºç©ºï¼");
         }
-        // µ÷ÓÃ userService ÖĞµÄ login() ·½·¨£¬½«ÓÃ»§ÊäÈëµÄµÇÂ¼ĞÅÏ¢´«Èë½øĞĞÑéÖ¤£¬
-        // ²¢»ñÈ¡·µ»ØµÄ SaTokenInfo ¶ÔÏó£¬¸Ã¶ÔÏó°üº¬ÁËµÇÂ¼³É¹¦ºóÉú³ÉµÄ token µÈĞÅÏ¢
+        // è°ƒç”¨ userService ä¸­çš„ login() æ–¹æ³•ï¼Œå°†ç”¨æˆ·è¾“å…¥çš„ç™»å½•ä¿¡æ¯ä¼ å…¥è¿›è¡ŒéªŒè¯ï¼Œ
+        // å¹¶è·å–è¿”å›çš„ SaTokenInfo å¯¹è±¡ï¼Œè¯¥å¯¹è±¡åŒ…å«äº†ç™»å½•æˆåŠŸåç”Ÿæˆçš„ token ç­‰ä¿¡æ¯
         SaTokenInfo saTokenInfo = userService.login(data);
         if ( saTokenInfo == null ){
-            //Èç¹û»ñÈ¡µ½µÄ saTokenInfo Îª null£¬Ôò±íÊ¾ÑéÖ¤Ê§°Ü£¬Êä³ö´íÎóĞÅÏ¢¡£
-            System.out.println("400,ÓÃ»§Ãû»òÃÜÂë´íÎó£¡");
+            //å¦‚æœè·å–åˆ°çš„ saTokenInfo ä¸º nullï¼Œåˆ™è¡¨ç¤ºéªŒè¯å¤±è´¥ï¼Œè¾“å‡ºé”™è¯¯ä¿¡æ¯ã€‚
+            System.out.println("400,ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼");
         }
-        // ½« token Öµ·â×°µ½Ò»¸ö maps ¹şÏ£±íÖĞ£¬ÔÙ½«¸Ã¹şÏ£±í×ª»»Îª JSON ¸ñÊ½µÄ×Ö·û´®²¢Êä³öµ½¿ØÖÆÌ¨
+        // å°† token å€¼å°è£…åˆ°ä¸€ä¸ª maps å“ˆå¸Œè¡¨ä¸­ï¼Œå†å°†è¯¥å“ˆå¸Œè¡¨è½¬æ¢ä¸º JSON æ ¼å¼çš„å­—ç¬¦ä¸²å¹¶è¾“å‡ºåˆ°æ§åˆ¶å°
         Map<String,Object> maps = new HashMap<>();
         assert saTokenInfo != null;
         maps.put("token",saTokenInfo.getTokenValue());
@@ -46,28 +47,29 @@ public class TestLoginRun {
         System.out.println(result);
     }
 
-    // Ê¹ÓÃÁË sa-token ¿ò¼Ü½øĞĞÉí·İÑéÖ¤£¬²¢·µ»ØÓÃ»§µÄÏà¹ØĞÅÏ¢
+    // ä½¿ç”¨äº† sa-token æ¡†æ¶è¿›è¡Œèº«ä»½éªŒè¯ï¼Œå¹¶è¿”å›ç”¨æˆ·çš„ç›¸å…³ä¿¡æ¯
     @Test
-    public void test2(){
+    public void testUserInfo(){
         SignInData data = new SignInData();
-        // ÉèÖÃÆäÖĞµÄ username ºÍ password ÊôĞÔ£¬ÓÃÓÚ´æ·ÅÓÃ»§ÊäÈëµÄµÇÂ¼ĞÅÏ¢¡£
+        // è®¾ç½®å…¶ä¸­çš„ username å’Œ password å±æ€§ï¼Œç”¨äºå­˜æ”¾ç”¨æˆ·è¾“å…¥çš„ç™»å½•ä¿¡æ¯ã€‚
         data.setUsername("admin");
-        // ÓÃmap¼¯ºÏ½«µÇÂ¼Éú³ÉµÄtokenĞÅÏ¢·µ»Ø¸øÇ°¶Ë
+        // ç”¨mapé›†åˆå°†ç™»å½•ç”Ÿæˆçš„tokenä¿¡æ¯è¿”å›ç»™å‰ç«¯
         Map<String,Object> maps = new HashMap<>();
-        // µ÷ÓÃ userService ÖĞµÄ selectOne() ·½·¨£¬¸ù¾İÓÃ»§Ãû²éÑ¯Êı¾İ¿âÖĞÊÇ·ñ´æÔÚ¶ÔÓ¦µÄÓÃ»§¼ÇÂ¼¡£Èç¹ûÓÃ»§²»´æÔÚ£¬ÔòÊä³ö´íÎóÌáÊ¾ĞÅÏ¢¡£
+        // è°ƒç”¨ userService ä¸­çš„ selectOne() æ–¹æ³•ï¼Œæ ¹æ®ç”¨æˆ·åæŸ¥è¯¢æ•°æ®åº“ä¸­æ˜¯å¦å­˜åœ¨å¯¹åº”çš„ç”¨æˆ·è®°å½•ã€‚å¦‚æœç”¨æˆ·ä¸å­˜åœ¨ï¼Œåˆ™è¾“å‡ºé”™è¯¯æç¤ºä¿¡æ¯ã€‚
         User user = userService.selectOne(data.getUsername());
         if (user == null){
-            System.out.println("400,ÓÃ»§Ãû»òÃÜÂë´íÎó£¡");
+            System.out.println("400,ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼");
         }
         assert user != null;
-        // Èç¹ûÓÃ»§´æÔÚ£¬Ôò´Ó¸ÃÓÃ»§¼ÇÂ¼ÖĞ»ñÈ¡Í·Ïñ¡¢ĞÕÃûµÈÏà¹ØĞÅÏ¢£¬²¢½«Æä´æ´¢µ½Ò»¸öÃûÎª maps µÄ¹şÏ£±íÖĞ¡£
+        // å¦‚æœç”¨æˆ·å­˜åœ¨ï¼Œåˆ™ä»è¯¥ç”¨æˆ·è®°å½•ä¸­è·å–å¤´åƒã€å§“åç­‰ç›¸å…³ä¿¡æ¯ï¼Œå¹¶å°†å…¶å­˜å‚¨åˆ°ä¸€ä¸ªåä¸º maps çš„å“ˆå¸Œè¡¨ä¸­ã€‚
         maps.put("avatar",user.getAvatar());
         maps.put("name",user.getUsername());
-        // µ÷ÓÃ sa-token ¿ò¼ÜÌá¹© StpUtil ÀàÖĞµÄ getRoleList() ºÍ getPermissionList() ·½·¨£¬»ñÈ¡µ±Ç°ÓÃ»§µÄ½ÇÉ«ÁĞ±íºÍÈ¨ÏŞÁĞ±í
+        // è°ƒç”¨ sa-token æ¡†æ¶æä¾› StpUtil ç±»ä¸­çš„ getRoleList() å’Œ getPermissionList() æ–¹æ³•ï¼Œè·å–å½“å‰ç”¨æˆ·çš„è§’è‰²åˆ—è¡¨å’Œæƒé™åˆ—è¡¨
         maps.put("roles", StpUtil.getRoleList());
         maps.put("data",StpUtil.getPermissionList());
         String result = JSON.toJSONString(maps);
         System.out.println(result);
+        Assert.notNull(result);
     }
 
 }

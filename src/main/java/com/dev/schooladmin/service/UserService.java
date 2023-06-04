@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.controller.DTO.UserRole;
 import com.dev.schooladmin.entity.User;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -20,5 +21,9 @@ public interface UserService extends IService<User> {
     List<UserRole> selectUserRole();
 
     User selectOne(String username);
+
+    Integer add(User user);
+
+    Integer delById(Integer id);
 }
 

@@ -1,5 +1,7 @@
 package com.dev.schooladmin.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
@@ -14,7 +16,9 @@ import java.io.Serializable;
 @Data
 @SuppressWarnings("serial")
 public class User extends Model<User> {
+
     //主键
+    @TableId(value="id",type= IdType.AUTO)
     private Integer id;
     //头像
     private String avatar;

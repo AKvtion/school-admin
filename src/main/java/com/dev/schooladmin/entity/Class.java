@@ -1,5 +1,7 @@
 package com.dev.schooladmin.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Class extends Model<Class> {
     //主键
+    @TableId(value="id",type= IdType.AUTO)
     private Integer id;
     //班级名
     private String name;

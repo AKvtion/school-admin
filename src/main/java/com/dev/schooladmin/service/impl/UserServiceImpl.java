@@ -2,6 +2,7 @@ package com.dev.schooladmin.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -51,6 +52,24 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     @Override
     public User selectOne(String username) {
         return userDao.selectOne(new QueryWrapper<User>().select("id,avatar,username").eq("username", username));
+    }
+
+    @Override
+    public Integer add(User user) {
+        Integer flag = userDao.addUser(user);
+        if(Validator.isNotEmpty(flag) ){
+            userDao.addUserRole(user);
+        }
+        return flag;
+    }
+
+    @Override
+    public Integer delById(Integer id) {
+        Integer flag = userDao.delUserRoleById(id);
+        if (Validator.isNotEmpty(flag)){
+            userDao.delUserById(id);
+        }
+        return flag;
     }
 }
 

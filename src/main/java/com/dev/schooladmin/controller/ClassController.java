@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Class)表控制层
@@ -39,15 +41,13 @@ public class ClassController{
     /**
      * 分页查询所有数据
      *
-     * @param page 分页对象
      * @param colony 查询实体
      * @return 所有数据
      */
     @GetMapping
     @SaCheckPermission(value = {"class.queryAll"})
     @ApiOperation(value = "查询所有班级信息")
-    public Result selectAll(Class colony) {
-        Page<Class> page = new Page<>(1, 3);
+    public Result selectAll(Page<Class> page, Class colony) {
         return new Result().success(this.classService.page(page, new QueryWrapper<>(colony)));
     }
 
@@ -71,7 +71,7 @@ public class ClassController{
      * @param colony 实体对象
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     @SaCheckRole("admin")
     @ApiOperation(value = "新增班级信息")
     @SaCheckPermission(value = {"class.add"}, mode = SaMode.AND)    //SaMode.AND, 标注一组权限，会话必须全部具有才可通过校验。

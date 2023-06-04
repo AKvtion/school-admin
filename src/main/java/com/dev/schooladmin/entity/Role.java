@@ -1,5 +1,7 @@
 package com.dev.schooladmin.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
@@ -14,38 +16,14 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 @Data
 public class Role extends Model<Role> {
-    
+    @TableId(value="id",type= IdType.AUTO)
     private Integer id;
     
     private String name;
-    //角色表(超级管理员 管理员 用户)
+    //角色表(管理员 教师 学生用户)
     private String description;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    private String type;
     /**
      * 获取主键值
      *

@@ -19,5 +19,13 @@ public interface UserDao extends BaseMapper<User> {
     List<String> getPermissionListByUserId(@Param("id") Integer id);
 
     List<UserRole> selectUserRole();
+
+    Integer addUser(User user);
+
+    Integer addUserRole(User user);
+
+    Integer delUserRoleById(Integer id);
+
+    Integer delUserById(Integer i);
 }
 

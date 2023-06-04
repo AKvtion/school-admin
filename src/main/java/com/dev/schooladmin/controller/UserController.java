@@ -9,14 +9,12 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.lang.Validator;
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dev.schooladmin.base.entity.Result;
 import com.dev.schooladmin.controller.DTO.SignInData;
 import com.dev.schooladmin.controller.DTO.UserRole;
 import com.dev.schooladmin.controller.DTO.ErpMemberRoles;
-import com.dev.schooladmin.dao.UserDao;
 import com.dev.schooladmin.entity.User;
 import com.dev.schooladmin.service.UserService;
 import io.swagger.annotations.Api;
@@ -37,7 +35,7 @@ import java.util.Map;
  * @since 2023-03-25 16:35:53
  */
 @RestController
-@Api(tags = "管理员模块")
+@Api(tags = "用户模块")
 @RequestMapping("user")
 public class UserController{
     /**
@@ -180,9 +178,18 @@ public class UserController{
     @SaCheckLogin
     @PostMapping
     @SaCheckPermission("user.add")
-    @ApiOperation(value = "新增管理员信息")
+    @ApiOperation(value = "新增用户信息")
     public Result insert(@RequestBody User user) {
-        return new Result().success(this.userService.save(user));
+        if (Validator.isEmpty(user)){
+            return new Result().fail(400,"新增用户失败");
+        }
+        String md5Hex1 = DigestUtil.md5Hex(user.getPassword());
+        User u = new User();
+        u.setUsername(user.getUsername());
+        u.setEmail(user.getEmail());
+        u.setPassword(md5Hex1);
+        u.setType(user.getType());
+        return new Result().success(this.userService.add(u));
     }
 
     /**
@@ -194,7 +201,7 @@ public class UserController{
     @SaCheckLogin
     @PutMapping
     @SaCheckPermission("user.update")
-    @ApiOperation(value = "修改管理员信息")
+    @ApiOperation(value = "修改用户信息")
     public Result update(@RequestBody User user) {
         return new Result().success(this.userService.updateById(user));
     }
@@ -202,15 +209,17 @@ public class UserController{
     /**
      * 删除数据
      *
-     * @param idList 主键结合
+     * @param id 主键结合
      * @return 删除结果
      */
     @SaCheckLogin
     @DeleteMapping
     @SaCheckPermission("user.del")
-    @ApiOperation(value = "删除管理员信息")
-    public Result delete(@RequestParam("idList") List<Long> idList) {
-        return new Result().success(this.userService.removeByIds(idList));
+    @ApiOperation(value = "删除用户信息")
+    public Result delete(@RequestParam("id") Integer id) {
+        return new Result().success(this.userService.delById(id));
     }
+
+
 }
 

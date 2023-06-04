@@ -1,5 +1,6 @@
 package com.dev.schooladmin.controller;
 
+import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSON;
 import com.dev.schooladmin.controller.DTO.*;
 import com.dev.schooladmin.dao.RoleDao;
@@ -19,40 +20,41 @@ public class TestUserRoleRun {
     @Resource
     private RoleDao roleDao;
 
-    //ÓÃÓÚ²âÊÔÓÃ»§Óë½ÇÉ«ÁĞ±íÖ®¼äµÄ¹ØÏµ
+    // ç”¨äºæµ‹è¯•ç”¨æˆ·ä¸è§’è‰²åˆ—è¡¨ä¹‹é—´çš„å…³ç³»
     @Test
-    public void test1(){
+    public void testUserRole(){
         List<UserRole> userRoles = userDao.selectUserRole();
-        //±éÀú userRoles ÁĞ±í
+        // éå† userRoles åˆ—è¡¨
         for (UserRole userRole : userRoles) {
-            //¶ÔÓÚÃ¿¸ö UserRole ¶ÔÏó£¬´´½¨Ò»¸öĞÂµÄ ErpMemberRoles ¶ÔÏó
+            // å¯¹äºæ¯ä¸ª UserRole å¯¹è±¡ï¼Œåˆ›å»ºä¸€ä¸ªæ–°çš„ ErpMemberRoles å¯¹è±¡
             ErpMemberRoles erpMemberRole = new ErpMemberRoles();
-            //°Ñ²éÑ¯³öÀ´ UserRole ¶ÔÏóµÄÊôĞÔÖµ¸³Öµµ½ErpMemberRoles ½ÇÉ«ÀàÊôĞÔ
+            // æŠŠæŸ¥è¯¢å‡ºæ¥ UserRole å¯¹è±¡çš„å±æ€§å€¼èµ‹å€¼åˆ°ErpMemberRoles è§’è‰²ç±»å±æ€§
             erpMemberRole.setName(userRole.getName());
             erpMemberRole.setDescription(userRole.getDescription());
 
-            //´´½¨Ò»¸ö ErpMemberRoles ÀàĞÍµÄ ListÊı×é£¬½«ĞÂ´´½¨µÄ erpMemberRole ¶ÔÏóÌí¼Óµ½ÁĞ±íÖĞ
+            // åˆ›å»ºä¸€ä¸ª ErpMemberRoles ç±»å‹çš„ Listæ•°ç»„ï¼Œå°†æ–°åˆ›å»ºçš„ erpMemberRole å¯¹è±¡æ·»åŠ åˆ°åˆ—è¡¨ä¸­
             List<ErpMemberRoles> ers = new ArrayList<>();
             ers.add(erpMemberRole);
-            //½« ErpMemberRoles µÄ List ÉèÖÃ»Ø UserRole ¶ÔÏóµÄ erpMemberRoles ÊôĞÔÖĞ
+            // å°† ErpMemberRoles çš„ List è®¾ç½®å› UserRole å¯¹è±¡çš„ erpMemberRoles å±æ€§ä¸­
             userRole.setErpMemberRoles(ers);
         }
-        //Ê¹ÓÃFastJson½« userRoles ÁĞ±í×ª»»Îª JSON ×Ö·û´®
+        // ä½¿ç”¨FastJsonå°† userRoles åˆ—è¡¨è½¬æ¢ä¸º JSON å­—ç¬¦ä¸²
         String result = JSON.toJSONString(userRoles);
         System.out.println(result);
+        Assert.equals(-1,result);
     }
 
-    //ÓÃÓÚ²âÊÔ½ÇÉ«ÓëÈ¨ÏŞÁĞ±íÖ®¼äµÄ¹ØÏµ
+    // ç”¨äºæµ‹è¯•è§’è‰²ä¸æƒé™åˆ—è¡¨ä¹‹é—´çš„å…³ç³»
     @Test
-    public void test2(){
-        // ´Ó roleDao Êı¾İ¿â¶ÔÏóÖĞ»ñÈ¡ËùÓĞ½ÇÉ«ÓëÈ¨ÏŞµÄ¹ØÏµÊı¾İ£¬¸ÃÊı¾İÒÔ RolePms ¶ÔÏóµÄĞÎÊ½·µ»Ø
+    public void testRolePer(){
+        // ä» roleDao æ•°æ®åº“å¯¹è±¡ä¸­è·å–æ‰€æœ‰è§’è‰²ä¸æƒé™çš„å…³ç³»æ•°æ®ï¼Œè¯¥æ•°æ®ä»¥ RolePms å¯¹è±¡çš„å½¢å¼è¿”å›
         List<RolePms> rolePms = roleDao.selectRoleAll();
-        // ±éÀú rolePms ÁĞ±í£¬¶ÔÓÚÃ¿¸ö½ÇÉ«¶¼´´½¨Ò»¸ö¿ÕµÄ ErpMemberPermission ¶ÔÏóÁĞ±í
+        // éå† rolePms åˆ—è¡¨ï¼Œå¯¹äºæ¯ä¸ªè§’è‰²éƒ½åˆ›å»ºä¸€ä¸ªç©ºçš„ ErpMemberPermission å¯¹è±¡åˆ—è¡¨
         for (int i = 0; i < rolePms.size(); i++) {
             RolePms r = rolePms.get(i);
             List<ErpMemberPermission> ersList = new ArrayList<>();
-            // ÔÙ´Î±éÀú rolePms ÁĞ±í£¬½«Ã¿¸ö½ÇÉ«µÄÃû³ÆºÍÃèÊöĞÅÏ¢·â×°µ½Ò»¸öĞÂµÄ ErpMemberPermission ¶ÔÏóÖĞ,
-            // ²¢½«¸Ã¶ÔÏóÌí¼Óµ½ÏàÓ¦µÄ½ÇÉ«µÄ ErpMemberPermission ¶ÔÏóÁĞ±íÖĞ¡£
+            // å†æ¬¡éå† rolePms åˆ—è¡¨ï¼Œå°†æ¯ä¸ªè§’è‰²çš„åç§°å’Œæè¿°ä¿¡æ¯å°è£…åˆ°ä¸€ä¸ªæ–°çš„ ErpMemberPermission å¯¹è±¡ä¸­,
+            // å¹¶å°†è¯¥å¯¹è±¡æ·»åŠ åˆ°ç›¸åº”çš„è§’è‰²çš„ ErpMemberPermission å¯¹è±¡åˆ—è¡¨ä¸­ã€‚
             for (int j = 0; j < rolePms.size(); j++) {
                 RolePms role = rolePms.get(j);
                 ErpMemberPermission erpMemberPermission = new ErpMemberPermission();
@@ -62,8 +64,9 @@ public class TestUserRoleRun {
             }
             r.setErpMemberPermissions(ersList);
         }
-        //½«´¦ÀíºÃµÄ rolePms ÁĞ±í×ª»»Îª JSON ¸ñÊ½µÄ×Ö·û´®²¢Êä³öµ½¿ØÖÆÌ¨
+        // å°†å¤„ç†å¥½çš„ rolePms åˆ—è¡¨è½¬æ¢ä¸º JSON æ ¼å¼çš„å­—ç¬¦ä¸²å¹¶è¾“å‡ºåˆ°æ§åˆ¶å°
         String result = JSON.toJSONString(rolePms);
         System.out.println(result);
+        Assert.equals(-1,result);
     }
 }
